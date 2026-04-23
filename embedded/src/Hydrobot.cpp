@@ -13,7 +13,7 @@
 Hydrobot ::Hydrobot(TEENSY_PIN_ENUM relay_pin,
     MoistureSensor *sensors,
     uint8_t sensor_count,
-    LiquidCrystal_I2C *lcd,
+    hd44780_I2Cexp *lcd,
     float threshold,
     unsigned long pump_time,
     unsigned long soak_time) :
@@ -43,16 +43,23 @@ void Hydrobot ::setup()
     }
 
     // Setup LCD
-    _lcd->init();
+    Serial.println("Initializing LCD...");
+    int status = _lcd->begin(16, 2);
+    if (status != 0) {
+        Serial.print("LCD init failed, status = ");
+        Serial.println(status);
+    }
+    
     _lcd->backlight();
     _lcd->clear();
 
     // 2-second spash screen
+    Serial.println("LCD Initialized... Making splash screen.");
     _lcd->setCursor(0, 0);
     _lcd->print("Hydrobot v1.0");
     _lcd->setCursor(0, 1);
     _lcd->print("Booting up....");
-    delay(2000);
+    delay(5000);
     _lcd->clear();
 }
 

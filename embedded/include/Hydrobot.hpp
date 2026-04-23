@@ -9,7 +9,9 @@
 #include <stdint.h>
 #include "TeensyPins.h"
 #include "MoistureSensor.hpp"
-#include "LiquidCrystal_I2C.h"
+#include <Wire.h>
+#include <hd44780.h>
+#include <hd44780ioClass/hd44780_I2Cexp.h>
 
 // ─── System State ─────────────────────────────────────────────────────────
 enum SYSTEM_STATE_ENUM : uint8_t
@@ -25,7 +27,7 @@ public:
     Hydrobot(TEENSY_PIN_ENUM relay_pin,
              MoistureSensor *sensors,
              uint8_t sensor_count,
-             LiquidCrystal_I2C *lcd,
+             hd44780_I2Cexp *lcd,
              float threshold,
              unsigned long pump_time,
              unsigned long soak_time);
@@ -37,7 +39,7 @@ private:
     TEENSY_PIN_ENUM _relay_pin;
     MoistureSensor *_sensors;
     uint8_t _sensor_count;
-    LiquidCrystal_I2C *_lcd;
+    hd44780_I2Cexp *_lcd;
 
     float _watering_threshold;
     unsigned long _pump_run_time;
